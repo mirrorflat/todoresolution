@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "defaultMode": "auto",
+    "allow": [
+      "Bash(cd *)",
+      "Bash(python *)",
+      "PowerShell(Set-Location *)",
+      "PowerShell(python *)"
+    ]
+  }
+}
