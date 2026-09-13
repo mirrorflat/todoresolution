@@ -5,7 +5,7 @@ from src import db
 def test_extract_from_file_merge_behavior(tmp_path, monkeypatch):
     monkeypatch.setattr(db, "DB_PATH", tmp_path / "test.db")
     md_file = tmp_path / "tasks.md"
-    md_file.write_text("⬜ タスクA - 期限 今日\n", encoding="utf-8")
+    md_file.write_text("今日の予定\nタスクA\nタスク・日今日\n", encoding="utf-8")
     monkeypatch.setattr(app_module.filedialog, "askopenfilename", lambda **kwargs: str(md_file))
 
     app = app_module.App()
@@ -21,7 +21,9 @@ def test_extract_from_file_merge_behavior(tmp_path, monkeypatch):
         app.tasks[0].resolution = 1.0
 
         # 2) re-extract with an added task must keep タスクA's edited values
-        md_file.write_text("⬜ タスクA - 期限 今日\n⬜ タスクB - 期限 今日\n", encoding="utf-8")
+        md_file.write_text(
+            "今日の予定\nタスクA\nタスク・日今日\nタスクB\nタスク・日今日\n", encoding="utf-8"
+        )
         app.on_extract_from_file()
         app.update_idletasks()
         titles = {t.title: t for t in app.tasks}

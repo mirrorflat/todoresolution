@@ -59,11 +59,12 @@ class BubbleChart(tk.Frame):
         self.ax.grid(True, linestyle=":", alpha=0.5)
 
     def set_tasks(self, tasks: list[Task]):
-        self._tasks = tasks
+        # Done tasks are tracked in the table but dropped from the chart entirely.
+        self._tasks = [task for task in tasks if not task.done]
         self._patches.clear()
         self._labels.clear()
         self._setup_axes()
-        for task in tasks:
+        for task in self._tasks:
             self._add_patch(task)
         self.canvas.draw_idle()
 
